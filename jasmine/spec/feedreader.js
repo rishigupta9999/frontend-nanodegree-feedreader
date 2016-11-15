@@ -86,6 +86,7 @@ $(function() {
             $(".menu-icon-link").click();
             expect($("body")).toHaveClass("menu-hidden");
         });
+    });
 
     /* TODO: Write a new test suite named "Initial Entries" */
 
@@ -95,6 +96,18 @@ $(function() {
          * Remember, loadFeed() is asynchronous so this test will require
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
+    describe("Initial Entries", function() {
+
+        beforeEach(function(done) {
+            loadFeed(0, function() {
+                done();
+            });
+        });
+
+        it("Load Feed completion", function() {
+            expect($(".feed > .entry-link").length).not.toBe(0);
+        });
+    });
 
     /* TODO: Write a new test suite named "New Feed Selection"
 
@@ -102,5 +115,31 @@ $(function() {
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
+
+    describe("New Feed Selection", function() {
+        var originalFeedContent = [];
+        var newFeedContent = [];
+
+        beforeEach(function(done) {
+
+            loadFeed(0, function() {
+                $(".feed > .entry-link").each(function() {
+                    originalFeedContent.push($(this).text().trim());
+                });
+
+                loadFeed(1, function() {
+                    $(".feed > .entry-link").each(function() {
+                        newFeedContent.push($(this).text().trim());
+                    });
+
+                    done();
+                });
+            });
+        });
+
+        it("Feed Content changes", function() {
+            expect(originalFeedContent).not.toEqual(newFeedContent);
+        });
     });
+
 }());
