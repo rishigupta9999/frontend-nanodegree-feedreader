@@ -105,7 +105,7 @@ $(function() {
         });
 
         it("Load Feed completion", function() {
-            expect($(".feed > .entry-link").length).not.toBe(0);
+            expect($(".feed .entry").length).not.toBe(0);
         });
     });
 
